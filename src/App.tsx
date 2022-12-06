@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 
 // `https://api.datamuse.com/words?rel_syn=`
@@ -13,10 +12,10 @@ export default function App() {
   const [word, setWord] = useState<string>('')
   const [synonyms, setSynonyms] = useState<Synonym[]>([])
 
-  const fetchSynonyms = (newWord: string) => {
-    fetch(`https://api.datamuse.com/words?rel_syn=${newWord}`)
-      .then(response => response.json())
-      .then(setSynonyms)
+  async function fetchSynonyms(newWord: string) {
+    const response = await fetch(`https://api.datamuse.com/words?rel_syn=${newWord}`)
+    const synonyms = await response.json()
+    setSynonyms(synonyms)
   }
 
   const handleSubmitForm = (e: React.FormEvent) => {
@@ -31,14 +30,10 @@ export default function App() {
   }
 
   return (
-    <div className="App">
+    <div className='App'>
       <form onSubmit={handleSubmitForm}>
-        <label htmlFor="word-form">Insert word</label>
-        <input
-          id="word-form"
-          onChange={e => setWord(e.target.value)}
-          value={word}
-        />
+        <label htmlFor='word-form'>Insert word</label>
+        <input id='word-form' onChange={e => setWord(e.target.value)} value={word} />
         <button>Submit</button>
       </form>
       <ol>
